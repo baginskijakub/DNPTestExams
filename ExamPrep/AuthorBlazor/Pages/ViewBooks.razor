@@ -1,0 +1,67 @@
+@page "/ViewBooks"
+@using AuthorBlazor.Domain
+@using System.Text.Json
+
+<h3>ViewBooks</h3>
+
+    <div style="margin-top: 20px; display: flex; flex-direction: row; gap: 16px">
+        <h4 style="width: 250px">Title</h4>
+        <h4 style="width: 250px">PublicationYear</h4>
+        <h4 style="width: 250px">AuthorName</h4>
+    </div>
+@foreach (var book in allBooks)
+{
+    string authorName = "";
+    allAuthors.ForEach(author =>
+    {
+        if (author.Id == book.AuthorId)
+        {
+            authorName = author.FirstName + " " +  author.LastName;
+        }
+    });
+    <div style="margin-top: 20px; display: flex; flex-direction: row; gap: 16px">
+        <p style="width: 250px">@book.Title</p>
+        <p style="width: 250px">@book.PublicationYear</p>
+        <p style="width: 250px">@authorName</p>
+    </div>
+}
+
+
+
+@code {
+    HttpClient client = new HttpClient();
+    public List<Book> allBooks = new List<Book>();
+    public List<Author> allAuthors = new List<Author>();
+
+    protected async override Task OnInitializedAsync()
+    {
+        HttpResponseMessage res = await client.GetAsync("https://localhost:7008/Book/");
+        string content = await res.Content.ReadAsStringAsync();
+        
+        if (!res.IsSuccessStatusCode)
+        {
+            throw new Exception(content);
+        }
+        
+        List<Book> books = JsonSerializer.Deserialize<List<Book>>(content, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        })!;
+        allBooks = books;
+        
+        HttpResponseMessage res2 = await client.GetAsync("https://localhost:7008/Author/");
+        string content2 = await res2.Content.ReadAsStringAsync();
+        
+        if (!res2.IsSuccessStatusCode)
+        {
+            throw new Exception(content2);
+        }
+        
+        List<Author> authors = JsonSerializer.Deserialize<List<Author>>(content2, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        })!;
+        allAuthors = authors;
+    }
+
+}

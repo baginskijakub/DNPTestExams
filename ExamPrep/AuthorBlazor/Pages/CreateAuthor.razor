@@ -1,0 +1,53 @@
+@page "/CreateAuthor"
+@using AuthorBlazor.Domain
+<h3>Create Author</h3>
+
+<h6>First name</h6>
+<input type="text" @bind="firstName"/>
+<h6>Last name</h6>
+<input type="text" @bind="lastName"/>
+<p style="color: red">@error</p>
+<p style="color: green">@success</p>
+<button onclick="@onApply"> Add author</button>
+
+@code {
+    public string firstName { get; set; } = "";
+    public string lastName { get; set; } = "";
+    public string error { get; set; } = "";
+    public string success { get; set; } = "";
+
+    public async void onApply()
+    {
+        HttpClient client = new HttpClient();
+        try
+        {
+            HttpResponseMessage res = await client.PostAsJsonAsync(
+                "https://localhost:7008/Author/",
+                new Author()
+                {
+                    Id = 0,
+                    FirstName = firstName,
+                    LastName = lastName,
+                }
+                );
+            if (res.IsSuccessStatusCode)
+            {
+                success = "Author succesfully added";
+                Console.WriteLine("suc");
+            }
+            else
+            {
+                error = "Something went wrong, make sure you inserted both first and last name";
+                Console.WriteLine("err");
+            }
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+
+    }
+    
+    
+}

@@ -1,0 +1,19 @@
+.table-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #4dfefd;
+}
+
+.table-row{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+.table-row h6{
+    width: 200px;
+}
+
+.table-row p{
+    width: 200px;
+}

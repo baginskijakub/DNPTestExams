@@ -1,0 +1,19 @@
+.table-wrapper[b-m2kd9z86wk]{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #4dfefd;
+}
+
+.table-row[b-m2kd9z86wk]{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+.table-row h6[b-m2kd9z86wk]{
+    width: 200px;
+}
+
+.table-row p[b-m2kd9z86wk]{
+    width: 200px;
+}

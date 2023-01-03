@@ -1,0 +1,94 @@
+@page "/CreatePlayer"
+@using Microsoft.AspNetCore.Components
+@using BlazorApplication.Models
+@using System.Text.Json
+<h3>CreatePlayer</h3>
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+    <p>Player name</p>
+    <input type="text" @bind="playerName"/>
+    <p>Team</p>
+    <select @bind="@teamName">
+        <option>Select team</option>
+        @foreach (Team team in teams)
+        {
+            <option value="@team.TeamName">@team.TeamName</option>
+        }
+    </select>
+    <p>Shirt Number</p>
+    <input type="number" @bind="shirtNo"/>
+    <p>Salary</p>
+    <input type="number" @bind="salary"/>
+    <p>Goals</p>
+    <input type="number" @bind="goals"/>
+    <p>Position</p>
+    <input type="text" @bind="position"/>
+    
+    <label>@error</label>
+    <button onclick="@OnApply">Apply</button>
+
+</div>
+
+@code {
+    public string playerName { get; set; }
+    public List<Team> teams { get; set;}
+    public int shirtNo { get; set; }
+    public decimal salary { get; set; }
+    public int goals { get; set; }
+    public string position { get; set; }
+    public string teamName { get; set; }
+    public string error { get; set; }
+    public HttpClient client = new HttpClient();
+    
+    protected async override Task OnInitializedAsync()
+    {
+        HttpResponseMessage res = await client.GetAsync("https://localhost:7243/Teams");
+
+        if (res.IsSuccessStatusCode)
+        {
+            string content = await res.Content.ReadAsStringAsync();
+            teams = JsonSerializer.Deserialize<List<Team>>(content, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            })!;
+        }
+    }
+    
+    public async void OnApply()
+    {
+        if (!String.IsNullOrEmpty(playerName) && !String.IsNullOrEmpty(teamName)&& !String.IsNullOrEmpty(position) && shirtNo != null)
+        {
+            HttpClient client = new HttpClient();
+            HttpResponseMessage res = await client.PostAsJsonAsync(
+                $"https://localhost:7243/Players/{teamName}",
+                new Player()
+                {
+                    Name = playerName,
+                    TeamName = teamName,
+                    ShirtNo = shirtNo,
+                    Salary = salary,
+                    GoalsInSeason = goals,
+                    Position = position
+                });
+            if (res.IsSuccessStatusCode)
+            {
+                error = "Player added";
+                StateHasChanged();
+            }
+            else
+            {            
+                error = "Something went wrong, check input fields";
+            }
+            Console.WriteLine(res.Content);
+        }
+        else
+        {
+            error = "Something went wrong, check input fields";
+            StateHasChanged();
+        }
+    }
+
+
+
+
+}

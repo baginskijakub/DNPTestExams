@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorAPI", "AuthorAPI\AuthorAPI.csproj", "{8C497811-52A7-458D-8ABC-CAC0A1CD2A95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorBlazor", "AuthorBlazor\AuthorBlazor.csproj", "{BF3B43CA-074D-4109-BCA1-DFA19AC2CD4E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8C497811-52A7-458D-8ABC-CAC0A1CD2A95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C497811-52A7-458D-8ABC-CAC0A1CD2A95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C497811-52A7-458D-8ABC-CAC0A1CD2A95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C497811-52A7-458D-8ABC-CAC0A1CD2A95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF3B43CA-074D-4109-BCA1-DFA19AC2CD4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF3B43CA-074D-4109-BCA1-DFA19AC2CD4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF3B43CA-074D-4109-BCA1-DFA19AC2CD4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF3B43CA-074D-4109-BCA1-DFA19AC2CD4E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

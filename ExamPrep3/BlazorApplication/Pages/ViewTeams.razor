@@ -1,0 +1,110 @@
+@page "/ViewTeams"
+@using BlazorApplication.Models
+@using System.Text.Json
+<h3>ViewTeams</h3>
+
+<p>Max ranking</p>
+<input type="number" @bind="maxRanking"/>
+<p>Search</p>
+<input type="text" @bind="searchQuery"/>
+<button onclick="@OnApply">Apply</button>
+<button onclick="@OnClear" style="color: red">Clear filters</button>
+
+
+@foreach (var allTeam in allTeams)
+{
+    <div>
+        <h6 style="margin-bottom: 12px; margin-top: 24px">@allTeam.TeamName coached by @allTeam.NameOfCoach ranking: @allTeam.Ranking</h6>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Shirt Number</th>
+                <th>Salary</th>
+                <th>Goals</th>
+                <th>Position</th>
+            </tr>
+            @foreach (var player in allTeam.Players)
+            {
+                <tr>
+                    <th>@player.Name</th>
+                    <th>@player.ShirtNo</th>
+                    <th>@player.Salary</th>
+                    <th>@player.GoalsInSeason</th>
+                    <th>@player.Position</th>
+                    <th><button @onclick="()=>DeletePlayer(player.Id)">Delete Player</button></th>
+                </tr>
+            }
+        </table>
+
+    </div>
+}
+
+
+@code {
+    //filters
+    public int? maxRanking { get; set; }
+    public string? searchQuery { get; set; }
+    
+    public List<Team> allTeams = new List<Team>();
+    HttpClient _client = new HttpClient();
+
+    protected async override Task OnInitializedAsync()
+    {
+        HttpResponseMessage res = await _client.GetAsync("https://localhost:7243/Teams/");
+        if (res.IsSuccessStatusCode)
+        {
+            string content = await res.Content.ReadAsStringAsync();
+            allTeams = JsonSerializer.Deserialize<List<Team>>(content, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            })!;
+        }
+    }
+
+    public async Task DeletePlayer(int id)
+    {
+        Console.WriteLine("dupa");
+        await _client.DeleteAsync($"https://localhost:7243/Players/{id}");
+
+        
+        HttpResponseMessage res = await _client.GetAsync("https://localhost:7243/Teams");
+        if (res.IsSuccessStatusCode)
+        {
+            string content = await res.Content.ReadAsStringAsync();
+            allTeams = JsonSerializer.Deserialize<List<Team>>(content, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            })!;
+        }
+        StateHasChanged();
+    }
+
+    public async Task OnApply()
+    {
+        HttpResponseMessage res = await _client.GetAsync($"https://localhost:7243/Teams?ranking={maxRanking}&teamname={searchQuery}");
+        if (res.IsSuccessStatusCode)
+        {
+            string content = await res.Content.ReadAsStringAsync();
+            allTeams = JsonSerializer.Deserialize<List<Team>>(content, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            })!;
+        }
+    }
+
+    public async Task OnClear()
+    {
+        maxRanking = null;
+        searchQuery = null;
+        HttpResponseMessage res = await _client.GetAsync("https://localhost:7243/Teams/");
+        if (res.IsSuccessStatusCode)
+        {
+            string content = await res.Content.ReadAsStringAsync();
+            allTeams = JsonSerializer.Deserialize<List<Team>>(content, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            })!;
+        }
+    }
+
+}

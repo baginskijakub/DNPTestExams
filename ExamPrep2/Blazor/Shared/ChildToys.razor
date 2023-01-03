@@ -1,0 +1,54 @@
+@using WebAPI.Domain
+
+<div class="table-wrapper">
+    <h4>@child.Name is a @child.Age years old @child.Gender</h4>
+    <div class="table-row">
+        <h6>Toy name</h6>
+        <h6>Color</h6>
+        <h6>Is favourite</h6>
+    </div>
+    @foreach (Toy toy in child.toys)
+    {
+        if (showFav && toy.IsFavourite)
+        {
+            <div class="table-row">
+                <p>@toy.Name</p>
+                <p>@toy.Color</p>
+                <p>@toy.IsFavourite</p>
+                <button onclick="() => DeleteToy(toy.Id)">Delete</button>
+            </div>
+        }
+        else if(showNon && !toy.IsFavourite)
+        {
+            <div class="table-row">
+                <p>@toy.Name</p>
+                <p>@toy.Color</p>
+                <p>@toy.IsFavourite</p>
+                <button onclick="() => DeleteToy(toy.Id)">Delete</button>
+            </div>
+        }
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Child child { get; set; }
+    
+    [Parameter]
+    public Action ChangeUpperState { get; set; }
+
+    [Parameter]
+    public bool showFav { get; set; }
+    
+    [Parameter]
+    public bool showNon { get; set; }
+
+    public async Task DeleteToy(int id)
+    {
+        HttpClient client = new HttpClient();
+        HttpResponseMessage res = await client.DeleteAsync(
+            $"https://localhost:7168/Toys/{id}");
+        ChangeUpperState();
+    }
+
+}

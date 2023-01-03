@@ -1,0 +1,55 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property._SupportedPlatformList = browser
+build_property.EnableSingleFileAnalyzer = 
+build_property.EnableTrimAnalyzer = true
+build_property.IncludeAllContentForSelfExtract = 
+build_property.RootNamespace = BlazorApplication
+build_property.RootNamespace = BlazorApplication
+build_property.ProjectDir = /Users/kuba/RiderProjects/ExamPrep3/BlazorApplication/
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = /Users/kuba/RiderProjects/ExamPrep3/BlazorApplication
+build_property._RazorSourceGeneratorDebug = 
+
+[/Users/kuba/RiderProjects/ExamPrep3/BlazorApplication/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/kuba/RiderProjects/ExamPrep3/BlazorApplication/Pages/CreatePlayer.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ3JlYXRlUGxheWVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/kuba/RiderProjects/ExamPrep3/BlazorApplication/Pages/CreateTeam.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ3JlYXRlVGVhbS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/kuba/RiderProjects/ExamPrep3/BlazorApplication/Pages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/kuba/RiderProjects/ExamPrep3/BlazorApplication/Shared/SurveyPrompt.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkL1N1cnZleVByb21wdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/kuba/RiderProjects/ExamPrep3/BlazorApplication/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/kuba/RiderProjects/ExamPrep3/BlazorApplication/Pages/ViewTeams.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvVmlld1RlYW1zLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-c60ul1z2v6
+
+[/Users/kuba/RiderProjects/ExamPrep3/BlazorApplication/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkL01haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-din36okyub
+
+[/Users/kuba/RiderProjects/ExamPrep3/BlazorApplication/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkL05hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-asfww2mfis

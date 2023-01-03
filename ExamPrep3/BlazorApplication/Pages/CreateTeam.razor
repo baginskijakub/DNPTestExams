@@ -1,0 +1,58 @@
+@page "/CreateTeam"
+@using BlazorApplication.Models
+
+<h3>CreateTeam</h3>
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+    <p>Team name</p>
+    <input type="text" @bind="teamName"/>
+    <p>Coach name</p>
+    <input type="text" @bind="coachName"/>
+    <p>Ranking</p>
+    <input type="number" @bind="ranking"/>
+    <label>@error</label>
+    <button onclick="@OnApply">Apply</button>
+
+</div>
+@code {
+
+    public string teamName { get; set; }
+    public string coachName { get; set; }
+    public int ranking { get; set; }
+    public string error { get; set; }
+
+    public async void OnApply()
+    {
+        if (!String.IsNullOrEmpty(teamName) && !String.IsNullOrEmpty(coachName) && ranking != null)
+        {
+            HttpClient client = new HttpClient();
+            HttpResponseMessage res = await client.PostAsJsonAsync(
+                "https://localhost:7243/Teams",
+                new Team()
+                {
+                    TeamName = teamName,
+                    NameOfCoach = coachName,
+                    Ranking = ranking
+                });
+            if (res.IsSuccessStatusCode)
+            {
+                error = "Team added";
+                StateHasChanged();
+            }
+            else
+            {            
+                error = "Something went wrong, check input fields";
+            }
+            Console.WriteLine(res.Content);
+        }
+        else
+        {
+            error = "Something went wrong, check input fields";
+            StateHasChanged();
+        }
+    }
+    
+    
+    
+
+}

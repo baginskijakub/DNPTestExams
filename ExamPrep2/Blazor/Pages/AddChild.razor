@@ -1,0 +1,65 @@
+@page "/AddChild"
+@using System.ComponentModel.DataAnnotations
+@using WebAPI.Domain
+<h3>AddChild</h3>
+<h6>Enter name</h6>
+<input type="text" @bind="name"/>
+<h6>Enter age(3 - 6)</h6>
+<input type="number" @bind="age"/>
+<h6>Enter gender(Male or Female)</h6>
+<input type="text" @bind="gender"/>
+<p style="color: red">@error</p>
+<p style="color: green">@success</p>
+<button onclick="@OnApply">Add child</button>
+
+@code {
+    public string name { get; set; }
+    public int age { get; set; }
+    public string gender { get; set; }
+    public string error { get; set; }
+    public string success { get; set; }
+
+    public async void OnApply()
+    {
+        error = "";
+        success = "";
+        if (String.IsNullOrEmpty(name))
+        {
+            error = "Name can't be empty";
+            return;
+        }
+        else if (age > 6 || age < 3)
+        {
+            error = "Age has to be 3 - 6 years old";
+            return;
+        }
+        else if (gender != "Female" && gender != "Male")
+        {
+            error = "Gender has to be either Female or Male";
+            return;
+        }
+        else
+        {
+            HttpClient client = new HttpClient();
+            HttpResponseMessage res = await client.PostAsJsonAsync(
+                "https://localhost:7168/Children/",
+                new Child()
+                {
+                    Age = age,
+                    Gender = gender,
+                    Name = name
+                });
+            
+            if (res.IsSuccessStatusCode)
+            {
+                success = "Child successfully added";
+                
+            }
+            else
+            {
+                error = "An error has occured, please try again";
+            }
+            StateHasChanged();
+        }
+    }
+}

@@ -1,0 +1,73 @@
+@page "/ViewToys"
+@using WebAPI.Domain
+@using System.Text.Json
+
+
+<h3 style="margin-bottom: 40px">ViewToys</h3>
+<div style="display: flex; flex-direction: row; gap: 12px">
+    <p style="margin-right: -8px">Show favourite</p>
+    <input type="checkbox" @bind="@showFavourite"/>
+    <p style="margin-right: -8px">Show non-favourite</p>
+    <input type="checkbox" @bind="@showNonFavourite"/>
+    <p style="margin-right: -8px">Select gender:</p>
+    <select @bind="gender">
+        <option value="Both" onclick="@StateHasChanged">Both</option>
+        <option value="Male" onclick="@StateHasChanged">Male</option>
+        <option value="Female" onclick="@StateHasChanged">Female</option>
+    </select>
+</div>
+<div style="display: flex; flex-direction: column; gap: 20px">
+    @foreach (var child in children)
+    {
+        if (gender == "Both")
+        {
+            <ChildToys child="child" ChangeUpperState="StateHasChanged" showFav="showFavourite" showNon="showNonFavourite"></ChildToys>
+        }
+        else if (gender == "Male")
+        {
+            if (child.Gender == "Male")
+            {
+                <ChildToys child="child" ChangeUpperState="StateHasChanged" showFav="showFavourite" showNon="showNonFavourite"></ChildToys>
+            }
+        }
+        else if (child.Gender == "Female")
+        {
+            if (child.Gender == "Female")
+            {
+                <ChildToys child="child" ChangeUpperState="StateHasChanged" showFav="showFavourite" showNon="showNonFavourite"></ChildToys>
+            }
+        }
+        else
+        {
+            <p>error</p>
+        }
+    }
+</div>
+
+
+@code {
+    public string gender { get; set; } = "Both";
+    public bool showFavourite { get; set; } = true;
+    public bool showNonFavourite { get; set; } = true;
+    public List<Child> children { get; set; }
+    public string childState { get; set; } = "all";
+    
+    
+
+    protected async override Task OnInitializedAsync()
+    {
+        HttpClient client = new HttpClient();
+        HttpResponseMessage res = await client.GetAsync("https://localhost:7168/Children/");
+        
+        if (res.IsSuccessStatusCode)
+        {
+            string content = await res.Content.ReadAsStringAsync();
+            List<Child> list = JsonSerializer.Deserialize<List<Child>>(content, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            })!;
+            children = list;
+        }
+    }
+
+};

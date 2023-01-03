@@ -1,0 +1,98 @@
+@page "/CreateBook"
+@using AuthorBlazor.Domain
+@using System.Text.Json
+<h3>CreateBook</h3>
+<h6>Title</h6>
+<input type="text" @bind="title"/>
+<h6>Isbn</h6>
+<input type="text" @bind="isbn"/>
+<h6>Publication Year</h6>
+<input type="text" @bind="publication"/>
+<h6>Number of pages</h6>
+<input type="text" @bind="pagesno"/>
+<h6>Genre</h6>
+<input type="text" @bind="genre"/>
+<h6>Author</h6>
+<select @bind="authorId">
+    <option>Choose</option>
+    @foreach (var author in allAuthors)
+    {
+        <option value="@author.Id">@author.FirstName @author.LastName</option>
+    }
+</select>
+<p style="color: red">@error</p>
+<p style="color: green">@success</p>
+<button onclick="@onApply"> Add book</button>
+
+@code {
+    public string error { get; set; } = "";
+    public string success { get; set; } = "";
+    
+    public string title { get; set; } = "";
+    public string isbn { get; set; } = "";
+    public string publication { get; set; } = "";
+    public string pagesno { get; set; } = "";
+    public string genre { get; set; } = "";
+    public string authorId { get; set; } = "";
+    
+    HttpClient client = new HttpClient();
+
+    public List<Author> allAuthors = new List<Author>();
+
+    protected async override Task OnInitializedAsync()
+    {
+        HttpResponseMessage res = await client.GetAsync("https://localhost:7008/Author/");
+        string content = await res.Content.ReadAsStringAsync();
+        
+        if (!res.IsSuccessStatusCode)
+        {
+            throw new Exception(content);
+        }
+        
+        List<Author> authors = JsonSerializer.Deserialize<List<Author>>(content, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        })!;
+        allAuthors = authors;
+    }
+    
+    public async void onApply()
+    {
+        Console.WriteLine(isbn + authorId + title + genre + pagesno + publication);
+        HttpClient client = new HttpClient();
+        try
+        {
+            HttpResponseMessage res = await client.PostAsJsonAsync(
+                $"https://localhost:7008/Book/",
+                new Book()
+                {
+                    Isbn = Int32.Parse(isbn),
+                    Title = title,
+                    AuthorId = Int32.Parse(authorId),
+                    Genre = genre,
+                    NumOfPages = Int32.Parse(pagesno),
+                    PublicationYear = Int32.Parse(publication)
+                }
+                );
+            if (res.IsSuccessStatusCode)
+            {
+                success = "Book succesfully added";
+                Console.WriteLine("suc");
+            }
+            else
+            {
+                error = "Something went wrong, make sure you inserted the data correctly";
+                Console.WriteLine(res);
+            }
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+
+    }
+
+
+
+}
